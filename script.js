@@ -10,9 +10,11 @@ const NUMBER_REGEX = /\d/; // At least one number
 const SYMBOL_REGEX = /[\W_]/; // At least one special symbol
 
 // Password Strength Messages
-const WEAK_MESSAGE = 'Weak <i class="fa-solid fa-face-frown"></i>';
-const MEDIUM_MESSAGE = 'Medium <i class="fa-solid fa-face-meh"></i>';
-const STRONG_MESSAGE = 'Strong <i class="fa-solid fa-face-smile"></i>';
+const WEAK_MESSAGE = 'Password is: Weak <i class="fa-solid fa-face-frown"></i>';
+const MEDIUM_MESSAGE =
+  'Password is: Medium <i class="fa-solid fa-face-meh"></i>';
+const STRONG_MESSAGE =
+  'Password is: Strong <i class="fa-solid fa-face-smile"></i>';
 
 // Handle Password Input Events
 function handlePasswordInput() {
