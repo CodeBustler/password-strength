@@ -1,54 +1,59 @@
-let password = document.querySelector('#password');
-let message = document.querySelector('#message');
-let eyeIcon = document.querySelector('#eyeIcon');
+// DOM Elements
+const password = document.querySelector('#password'); // Password input
+const message = document.querySelector('#message'); // Strength message
+const eyeIcon = document.querySelector('#eyeIcon'); // Password visibility icon
 
-password.addEventListener('input', () => {
+// Regex Patterns
+const UPPERCASE_REGEX = /[A-Z]/; // At least one uppercase letter
+const LOWERCASE_REGEX = /[a-z]/; // At least one lowercase letter
+const NUMBER_REGEX = /\d/; // At least one number
+const SYMBOL_REGEX = /[\W_]/; // At least one special symbol
+
+// Password Strength Messages
+const WEAK_MESSAGE = 'Weak <i class="fa-solid fa-face-frown"></i>';
+const MEDIUM_MESSAGE = 'Medium <i class="fa-solid fa-face-meh"></i>';
+const STRONG_MESSAGE = 'Strong <i class="fa-solid fa-face-smile"></i>';
+
+// Handle Password Input Events
+function handlePasswordInput() {
   let passLength = password.value.length,
     passValue = password.value;
   message.style.display = 'block';
 
-  // Regex
-  let hasCapitalLetter = /[A-Z]/.test(passValue),
-    hasSmallLetter = /[a-z]/.test(passValue),
-    hasNumber = /\d/.test(passValue),
-    hasSymbols = /[~!@#$%^&*()_+`{}\[\];:'",.<>?/\\|=-]/.test(passValue);
-
-  // Messages
-  let weakMessage = 'Password is: Weak <i class="fa-solid fa-face-frown"></i>',
-    mediumMessage = 'Password is: Medium <i class="fa-solid fa-face-meh"></i>',
-    strongMessage =
-      'Password is: Strong  <i class="fa-solid fa-face-smile"></i>';
-
-  function changeColor(color) {
+  // Function to change password input style
+  function changeStyle(color) {
     password.style.borderColor = color;
     message.style.color = color;
   }
 
+  // Password strength checks and messages
   if (passLength <= 0) {
     message.innerHTML = '';
   } else if (passLength <= 8) {
-    message.innerHTML = `${weakMessage} (Must be >8 chars)`;
-    changeColor('red');
-  } else if (!hasCapitalLetter) {
-    message.innerHTML = `${mediumMessage} (no uppercase letter)`;
-    changeColor('#ff5925');
-  } else if (!hasSmallLetter) {
-    message.innerHTML = `${mediumMessage} (no lowercase letter)`;
-    changeColor('#ff5925');
-  } else if (!hasNumber) {
-    message.innerHTML = `${mediumMessage} (no number) `;
-    changeColor('#ff5925');
-  } else if (!hasSymbols) {
-    message.innerHTML = `${mediumMessage} (no special symbol) `;
-    changeColor('#ff5925');
+    message.innerHTML = `${WEAK_MESSAGE} (Must be >8 chars)`;
+    changeStyle('red');
+  } else if (!UPPERCASE_REGEX.test(passValue)) {
+    message.innerHTML = `${MEDIUM_MESSAGE} (no uppercase letter)`;
+    changeStyle('#ff5925');
+  } else if (!LOWERCASE_REGEX.test(passValue)) {
+    message.innerHTML = `${MEDIUM_MESSAGE} (no lowercase letter)`;
+    changeStyle('#ff5925');
+  } else if (!NUMBER_REGEX.test(passValue)) {
+    message.innerHTML = `${MEDIUM_MESSAGE} (no number)`;
+    changeStyle('#ff5925');
+  } else if (!SYMBOL_REGEX.test(passValue)) {
+    message.innerHTML = `${MEDIUM_MESSAGE} (no special symbol)`;
+    changeStyle('#ff5925');
   } else {
-    message.innerHTML = `${strongMessage}`;
-    changeColor('green');
+    message.innerHTML = `${STRONG_MESSAGE}`;
+    changeStyle('green');
   }
-});
+}
 
+// Event Listeners
+password.addEventListener('input', handlePasswordInput); // Password input events
 eyeIcon.addEventListener('click', () => {
-  password.type = password.type === 'password' ? 'text' : 'password';
+  password.type = password.type === 'password' ? 'text' : 'password'; // Toggle password visibility
   eyeIcon.classList.toggle('fa-eye-slash');
   eyeIcon.classList.toggle('fa-eye');
 });
